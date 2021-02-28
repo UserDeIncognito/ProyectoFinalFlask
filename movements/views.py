@@ -1,7 +1,8 @@
 from movements import app
 from flask import render_template, request,redirect
-import BBDD
-import apicoin
+from movements import apicoin
+from movements import BBDD
+
 
 #DBFILE = app.config['DBFILE']
 

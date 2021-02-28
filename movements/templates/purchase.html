@@ -47,9 +47,9 @@
 					<input type="submit" name ="accion" value="comprar" />
 					<input type="submit" name ="accion" value="borrar" />
 					<div id=error>
-						{% if changeerror %}Sorry me la intentaste liar pero no pendejo{% endif %}
-						{% if coinerror %}Sorry men no tienes money{% endif %}
-						{% if paramerror %}Aprende a leer los dos son iguales{% endif %}
+						{% if changeerror %}Se ha modificado un valor que no es el correcto{% endif %}
+						{% if coinerror %}No tienes cantidad suficiente{% endif %}
+						{% if paramerror %}Las dos monedas son iguales{% endif %}
 					</div>
 				</div>
 
