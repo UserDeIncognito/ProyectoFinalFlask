@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %} Home{% endblock %}
+{% block content %}
+    
+    <table class="default">
+    	<tr>
+    		<td>Fecha</td>
+    		<td>Hora</td>
+    		<td>From</td>
+    		<td>Q</td>
+    		<td>To</td>
+    		<td>Q</td>
+    		<td>P.U</td>
+    	</tr>
+    	{% for post in posts %}
+    	<tr>
+    		<td>{{ post['datepurchase'] }}</td>
+    		<td>{{ post['timepurchase'] }}</td>
+    		<td>{{ post['from_currency'] }}</td>
+    		<td>{{ post['form_quantity'] }}</td>
+    		<td>{{ post['to_currency'] }}</td>
+    		<td>{{ post['to_quantity'] }}</td>
+    		<td>{{ '%0.8f' % (post['form_quantity']/post['to_quantity'])|float  }}</td>
+    	</tr>
+        
+        {% else %}
+        	<div>Mira esto esta vacio</div>
+        {% endfor %}
+	</table>
+		
+        
+    <button> <a href="/status">Status</a></button>
+{% endblock %}

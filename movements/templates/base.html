@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head >
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css%22%3E>
+    <meta charset="UTF-8">
+    <title>Criptocoin</title>
+</head>
+<body>
+	<h1>{% block title %}{% endblock %}</h1>
+   <h2>Welcome to Criptocoin</h2>
+   <header>
+    <ul>
+    {% for href, caption in [(url_for('index') , 'Home'),
+                            (url_for('purchase'), 'Purchase'),
+                            (url_for('status'), 'Status')] %}
+        <li><a href="{{ href }}">{{ caption }}</a></li>
+    {% endfor %}
+    </ul>
+	</header>
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+<footer data-theme="dark">
+	&copy; 2021. Todos los derechos reservados
+</footer>

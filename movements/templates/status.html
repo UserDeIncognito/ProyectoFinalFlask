@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %} Status{% endblock %}
+{% block content %}
+
+<div id=inversion>
+	Valor invertido: {{ inversion}} €
+</div>
+<div id=valorActual>
+	Valor actual: {{"%.02f"% valoractual|float}} €
+</div>
+<div id=balance>
+	Balance de la inversion: {{"%.02f"% (valoractual-inversion)|float}} €
+</div>
+<form action="/">
+            <input type="submit" value="Home" />
+</form>
+{% endblock %}

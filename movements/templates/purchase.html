@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% set valuecoins= ["EUR","BTC","ETH","LTC","BNB","EOS","XLM","TRX","XRP","BCH","USDT","BSV","ADA"] %}
+{% block title %} Purchase{% endblock %}
+{% block content %}
+	<div id="Purchase">
+
+		
+			<form action="/purchase"  method="post">
+			<!-- -----------------------------Formulario------------------- -->
+				<div id=formfrom>
+					From:
+					<select name="formfrom">
+					{% for coin in valuecoins %}
+	    			<option value={{ coin }} {% if formfromsymbol==coin %} selected="selected"{% endif %}>{{ coin }}</option>
+	    			{% endfor %}
+
+					</select>
+				</div>
+				<div id=formto>
+					To:
+					<select name="fromto" >
+
+					{% for coin in valuecoins %}
+	    			<option value={{ coin }} {% if fromtosymbol==coin %} selected="selected"{% endif %}>{{ coin }}</option>
+	    			{% endfor %}
+
+					</select>
+				</div>
+				<label for="cryptochange">Cambio de Moneda</label>
+				<input type="number" id="cryptonumber"  name="cryptonumber" min="0" value={{ numbercoins }} step="0.1">
+				<br>
+				
+				<input type="submit" name ="accion" value="calculadora" />
+							<!-- -----------------------------Resultado de calculadora------------------- -->
+				<br>
+				
+				<div id=resultado>
+					<label id=coinpurchase>
+						Resultado al calcular es:
+				    	<input type="number" id="totalcoins"  name="totalcoins" value={{ totalcoins }} readonly="true">
+					</label>
+					<br>
+					<label name="PU">P.U:
+						<input type="number" id="pu"  name="PU" value={{ PU }} readonly="true">
+					</label>
+					<br>
+					<input type="submit" name ="accion" value="comprar" />
+					<input type="submit" name ="accion" value="borrar" />
+					<div id=error>
+						{% if changeerror %}Sorry me la intentaste liar pero no pendejo{% endif %}
+						{% if coinerror %}Sorry men no tienes money{% endif %}
+						{% if paramerror %}Aprende a leer los dos son iguales{% endif %}
+					</div>
+				</div>
+
+			</form>
+
+	</div>
+{% endblock %}
