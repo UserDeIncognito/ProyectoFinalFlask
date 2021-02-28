@@ -1,26 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head >
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css%22%3E>
-    <meta charset="UTF-8">
-    <title>Criptocoin</title>
+
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+    crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <title>Criptocoin</title>
 </head>
+
 <body>
-	<h1>{% block title %}{% endblock %}</h1>
-   <h2>Welcome to Criptocoin</h2>
-   <header>
-    <ul>
-    {% for href, caption in [(url_for('index') , 'Home'),
-                            (url_for('purchase'), 'Purchase'),
-                            (url_for('status'), 'Status')] %}
-        <li><a href="{{ href }}">{{ caption }}</a></li>
-    {% endfor %}
-    </ul>
-	</header>
-  <div class="container">
-    {% block content %}{% endblock %}
+  <header>
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Criptonator</a>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          {% for href, caption in 
+          [(url_for('index'),'Home'),
+          (url_for('purchase'), 'Purchase'),
+          (url_for('status'), 'Status')] %}
+
+          <li class="nav-item"><a class="nav-link" href="{{ href }}">{{ caption }}</a></li>
+
+          {% endfor %}
+        </ul>
+      </div>
+    </nav>
+    
+  </header>
+  <div class="container-md">
+    <div class="card mt-4">
+        <h5 class="card-header">{% block title %}{% endblock %}</h5>
+        <div class="card-body">{% block content %}{% endblock %}</div>
+    </div>
   </div>
 </body>
-<footer data-theme="dark">
-	&copy; 2021. Todos los derechos reservados
-</footer>
+<div class="fixed-bottom container-fluid " id="footer">
+  <div class="card-body"><h6 style="width:fit-content"class="mx-auto">&copy; 2021. Todos los derechos reservados</h6></div>
+</div>

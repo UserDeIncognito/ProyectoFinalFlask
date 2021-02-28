@@ -1,59 +1,74 @@
 {% extends 'base.html' %}
 {% set valuecoins= ["EUR","BTC","ETH","LTC","BNB","EOS","XLM","TRX","XRP","BCH","USDT","BSV","ADA"] %}
-{% block title %} Purchase{% endblock %}
+{% block title %} Compra de Cripotomonedas {% endblock %}
 {% block content %}
-	<div id="Purchase">
+<div id="Purchase">
 
-		
-			<form action="/purchase"  method="post">
-			<!-- -----------------------------Formulario------------------- -->
-				<div id=formfrom>
-					From:
-					<select name="formfrom">
-					{% for coin in valuecoins %}
-	    			<option value={{ coin }} {% if formfromsymbol==coin %} selected="selected"{% endif %}>{{ coin }}</option>
-	    			{% endfor %}
 
+	<form action="/purchase" method="post">
+		<!-- -----------------------------Formulario------------------- -->
+		<div class="row g-2">
+			<div class="col-md">
+				<div id=formfrom class="form-floating">
+					<select name="formfrom" class="form-select" id="FromSelect">
+						{% for coin in valuecoins %}
+						<option value={{ coin }} {% if formfromsymbol==coin %} selected="selected" {% endif %}>{{ coin
+							}}
+						</option>
+						{% endfor %}
 					</select>
+					<label for="FromSelect">From</label>
 				</div>
-				<div id=formto>
-					To:
-					<select name="fromto" >
+			</div>
+			<div class="col-md">
+				<div id=formto class="form-floating">
 
-					{% for coin in valuecoins %}
-	    			<option value={{ coin }} {% if fromtosymbol==coin %} selected="selected"{% endif %}>{{ coin }}</option>
-	    			{% endfor %}
-
+					<select name="fromto" class="form-select" id="ToSelect">
+						{% for coin in valuecoins %}
+						<option value={{ coin }} {% if fromtosymbol==coin %} selected="selected" {% endif %}>{{ coin }}
+						</option>
+						{% endfor %}
 					</select>
+					<label for="ToSelect">To</label>
+
 				</div>
-				<label for="cryptochange">Cambio de Moneda</label>
-				<input type="number" id="cryptonumber"  name="cryptonumber" min="0" value={{ numbercoins }} step="0.1">
+			</div>
+		</div>
+		<br>
+		<div class="row g-2">
+			<div class="col-md">
+				<div class="form-floating">
+					<input type="number" id="cryptonumber" name="cryptonumber" min="0" value={{ numbercoins }} step="0.1" class="form-control" placeholder="0">
+					<label for="cryptonumber" class="form-label">Cambio de Moneda</label>
+				</div>
 				<br>
-				
-				<input type="submit" name ="accion" value="calculadora" />
-							<!-- -----------------------------Resultado de calculadora------------------- -->
-				<br>
-				
+				<input type="submit" name="accion" value="Calculadora" class="btn btn-primary" />
+			</div>
+			<!-- -----------------------------Resultado de calculadora------------------- -->
+			<div class="col-md">
 				<div id=resultado>
-					<label id=coinpurchase>
-						Resultado al calcular es:
-				    	<input type="number" id="totalcoins"  name="totalcoins" value={{ totalcoins }} readonly="true">
-					</label>
+					<div class="form-floating">
+						<input type="number" id="totalcoins" name="totalcoins" value={{ totalcoins }} placeholder="0" readonly="true"class="form-control">
+						<label id="coinpurchase" for="totalcoins">Resultado al calcular es:</label>
+					</div>
 					<br>
-					<label name="PU">P.U:
-						<input type="number" id="pu"  name="PU" value={{ PU }} readonly="true">
-					</label>
+					<div class="form-floating">
+						<input type="number" id="pu" name="PU" value={{ PU }} placeholder="0" readonly="true" class="form-control">
+						<label name="PU" class="form-label" for="pu">P.U:</label>
+					</div>
 					<br>
-					<input type="submit" name ="accion" value="comprar" />
-					<input type="submit" name ="accion" value="borrar" />
+					<input type="submit" name="accion" value="Comprar" class="btn btn-primary" />
+					<input type="submit" name="accion" value="Borrar" class="btn btn-primary" />
 					<div id=error>
 						{% if changeerror %}Se ha modificado un valor que no es el correcto{% endif %}
 						{% if coinerror %}No tienes cantidad suficiente{% endif %}
 						{% if paramerror %}Las dos monedas son iguales{% endif %}
+						{% if apierror %}La API de criptomonedas esta caida{% endif %}
 					</div>
 				</div>
-
-			</form>
-
-	</div>
+			</div>
+		</div>
+	</form>
+	
+</div>
 {% endblock %}

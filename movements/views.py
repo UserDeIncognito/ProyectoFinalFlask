@@ -4,11 +4,16 @@ from movements import apicoin
 from movements import BBDD
 
 
-#DBFILE = app.config['DBFILE']
-
+DBFILE = app.config['DBFILE']
+API_KEY = app.config['API_KEY']
 #Pagina principal a la que pasaremos todos los datos de la tabla MOVEMENTS para que la muestre por pantalla
-@app.route('/') 
+@app.route('/', methods=['GET','POST'])
 def index():
+
+	if request.method == 'POST':
+		if(request.form['accion']=="Eliminar Base de Datos"):
+			BBDD.deleterows()
+		return redirect('/')	
 	posts = BBDD.get_data()
 	return render_template('index.html', posts=posts)
 
@@ -24,21 +29,25 @@ def purchase():
 		if numbercoins == "" or numbercoins == 0:
 			return render_template('purchase.html',coinerror=True)
 
-		if(request.form['accion']=="calculadora"):
+		if(request.form['accion']=="Calculadora"):
 
 			#En caso de que no sean iguales calcularemos los datos correspondientes llamando a la API (apicoin.py)
 			if not(formfromsymbol==fromtosymbol):
 				pu,totalcoins=apicoin.computevaluecoin(formfromsymbol,fromtosymbol,numbercoins)
+				if((pu==0) and (totalcoins==0)): #comprueba si la api esta caida
+					return render_template('purchase.html', apierror=True,numbercoins=0,PU=0,totalcoins=0)
 				return render_template('purchase.html',PU=pu,totalcoins=totalcoins,formfromsymbol=formfromsymbol,fromtosymbol=fromtosymbol,numbercoins=numbercoins)
 
 			#En caso de sean iguales volvemos a la pagina con el error correspondiente activado	
 			return render_template('purchase.html',paramerror=True,formfromsymbol=formfromsymbol,fromtosymbol=fromtosymbol)
 
-		if(request.form['accion']=="borrar"):
+		if(request.form['accion']=="Borrar"):
 			return render_template('purchase.html',PU=" ",formfromsymbol="EUR",fromtosymbol="EUR",numbercoins=" ",totalcoins=" ")
-		if(request.form['accion']=="comprar"):
+		if(request.form['accion']=="Comprar"):
 			#Para comprobar que el usuario no ha cambiado los datos o la moneda cambia de valor volvemos a calcular el precio actual y lo comparamos
 			pu,totalcoins=apicoin.computevaluecoin(formfromsymbol,fromtosymbol,numbercoins)
+			if((pu==0) and (totalcoins==0)): #comprueba si la api esta caida
+				return render_template('purchase.html', apierror=True,numbercoins=0,PU=0,totalcoins=0)
 			if((pu!=float(request.form['PU'])) or (totalcoins!=float(request.form['totalcoins']))):
 				#Si ha cambiado entonces volvemos a la pagina con el error correspondiente
 				return render_template('purchase.html', changeerror=True,numbercoins=0,PU=0,totalcoins=0)
@@ -51,7 +60,6 @@ def purchase():
 				#En caso de no tener monedas suficientes volvemos a la pagina con el error correspondiente
 				else:
 					return render_template('purchase.html',coinerror=True)
-
 
 	return render_template('purchase.html')
 

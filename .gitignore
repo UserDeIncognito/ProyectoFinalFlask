@@ -4,4 +4,4 @@ movements/__pycache__/
 .env
 .vscode/
 movements/data/movimientos.db
-config.py
+config_template.py

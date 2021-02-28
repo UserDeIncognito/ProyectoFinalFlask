@@ -1,17 +1,16 @@
 {% extends 'base.html' %}
-{% block title %} Status{% endblock %}
+{% block title %} Estado de las Inversiones{% endblock %}
 {% block content %}
+<div class="mx-auto" style="width: fit-content;">
 
-<div id=inversion>
-	Valor invertido: {{ inversion}} €
+	<div id=inversion> <b> Valor invertido:</b> {{ inversion}} €</div>
+	<br>
+	<div id=valorActual> <b>Valor actual:</b> {{"%.02f"% valoractual|float}} € </div>
+	<br>
+	<div id=balance> <b>Balance de la inversion:</b> {{"%.02f"% (valoractual-inversion)|float}} € </div>
+	<br>
+	<form action="/">
+		<input type="submit" value="Home" class="btn btn-primary" style="float:right" />
+	</form>
 </div>
-<div id=valorActual>
-	Valor actual: {{"%.02f"% valoractual|float}} €
-</div>
-<div id=balance>
-	Balance de la inversion: {{"%.02f"% (valoractual-inversion)|float}} €
-</div>
-<form action="/">
-            <input type="submit" value="Home" />
-</form>
 {% endblock %}

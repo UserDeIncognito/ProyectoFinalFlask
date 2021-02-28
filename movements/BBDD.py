@@ -1,24 +1,25 @@
 import sqlite3
 import datetime
 from movements import apicoin
+from movements import views
 
 #Funcion que obtiene el numero total de monedas de un tipo en la BD
 def numbersinglecoin(symbolfrom):
+	suma=0
+	resta=0
 	try:
-		conn = sqlite3.connect("movements/data/movimientos.db")
+		conn = sqlite3.connect(views.DBFILE)
 		conn.row_factory = sqlite3.Row
 		fromcoin = conn.execute('SELECT SUM(form_quantity) as RESTA FROM MOVEMENTS WHERE from_currency=\''+str(symbolfrom)+'\'').fetchall()
 		tocoin = conn.execute('SELECT SUM(to_quantity) as SUMA FROM MOVEMENTS WHERE TO_currency=\''+str(symbolfrom)+'\'').fetchall()
+		if(fromcoin[0]['RESTA']):
+			resta=-fromcoin[0]['RESTA']
+		if(tocoin[0]['SUMA']):
+			suma=tocoin[0]['SUMA']
 	except:
 			print("Base de datos no se encuentra")
 	finally:
 			conn.close()
-	suma=0
-	resta=0
-	if(fromcoin[0]['RESTA']):
-		resta=-fromcoin[0]['RESTA']
-	if(tocoin[0]['SUMA']):
-		suma=tocoin[0]['SUMA']
 	return suma+resta
 
 #Funcion que comprueba si la cantidad de monedas que tiene es suficiente para gastar
@@ -47,17 +48,19 @@ def checkaddmove(formfromsymbol,numbercoins,fromto,totalcoins):
 
 #Funcion que obtiene de la BD la cantidad de un tipo de moneda actual real invertido
 def totalinvertidocoin(symbol):
+	inversion=0
 	try:
-		conn = sqlite3.connect("movements/data/movimientos.db")
+		conn = sqlite3.connect(views.DBFILE)
 		conn.row_factory = sqlite3.Row
 		coininvertidas = conn.execute('SELECT SUM(form_quantity) as INVERTDO FROM MOVEMENTS WHERE from_currency=\''+str(symbol)+'\'').fetchall()
+
+		if(coininvertidas[0]['INVERTDO']):
+			inversion=coininvertidas[0]['INVERTDO']
 	except:
 			print("Base de datos no se encuentra")
 	finally:
 			conn.close()
-	inversion=0
-	if(coininvertidas[0]['INVERTDO']):
-		inversion=coininvertidas[0]['INVERTDO']
+	
 	return inversion
 
 #En nuestro caso el total de invertido solo corresponde a la moneda euro, que es desde proviene nuestra inversion
@@ -86,9 +89,9 @@ def currentvalue():
 
 #Funcion para obetenr todas las filas de la BD
 def get_data():
-	post=[]
+	posts=[]
 	try:
-		conn = sqlite3.connect("movements/data/movimientos.db")
+		conn = sqlite3.connect(views.DBFILE)
 		conn.row_factory = sqlite3.Row
 		posts = conn.execute('SELECT * FROM MOVEMENTS').fetchall()
 	except:
@@ -100,12 +103,26 @@ def get_data():
 #Funcion que crea un nuevo registro en la tabla MOVEMENTS
 def addMove(date,time,from_currency,form_quantity,to_currency,to_quantity):
 	try:
-		miConexion=sqlite3.connect("movements/data/movimientos.db")
+		miConexion=sqlite3.connect(views.DBFILE)
 		miCursor2 = miConexion.cursor()
 
 		data = date,time,from_currency,form_quantity,to_currency,to_quantity
 
 		miCursor2.execute("INSERT INTO MOVEMENTS VALUES (NULL,?,?,?,?,?,?)",(data))
 		miConexion.commit()
+	except:
+		print("Base de datos no se encuentra")
 	finally:
 		miConexion.close()
+
+#Funcion que elimina el registro
+def deleterows():
+    try:
+        conn = sqlite3.connect(views.DBFILE)
+        conn.row_factory = sqlite3.Row
+        conn.execute('DELETE from MOVEMENTS')
+        conn.commit()
+    except:
+            print("Se ha encontrado un error en la base de datos")
+    finally:
+            conn.close()

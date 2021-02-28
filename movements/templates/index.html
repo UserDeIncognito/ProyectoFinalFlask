@@ -1,33 +1,37 @@
 {% extends 'base.html' %}
-{% block title %} Home{% endblock %}
+{% block title %} Lista de Movientos{% endblock %}
 {% block content %}
-    
-    <table class="default">
-    	<tr>
-    		<td>Fecha</td>
-    		<td>Hora</td>
-    		<td>From</td>
-    		<td>Q</td>
-    		<td>To</td>
-    		<td>Q</td>
-    		<td>P.U</td>
-    	</tr>
-    	{% for post in posts %}
-    	<tr>
-    		<td>{{ post['datepurchase'] }}</td>
-    		<td>{{ post['timepurchase'] }}</td>
-    		<td>{{ post['from_currency'] }}</td>
-    		<td>{{ post['form_quantity'] }}</td>
-    		<td>{{ post['to_currency'] }}</td>
-    		<td>{{ post['to_quantity'] }}</td>
-    		<td>{{ '%0.8f' % (post['form_quantity']/post['to_quantity'])|float  }}</td>
-    	</tr>
-        
-        {% else %}
-        	<div>Mira esto esta vacio</div>
-        {% endfor %}
-	</table>
-		
-        
-    <button> <a href="/status">Status</a></button>
+
+<table class="table table-light table-striped table-hover">
+	<tr>
+		<th scope="col">Fecha</th>
+		<th scope="col">Hora</th>
+		<th scope="col">From</th>
+		<th scope="col">Q</th>
+		<th scope="col">To</th>
+		<th scope="col">Q</th>
+		<th scope="col">P.U</th>
+	</tr>
+	{% for post in posts %}
+	<tr>
+		<td>{{ post['datepurchase'] }}</td>
+		<td>{{ post['timepurchase'] }}</td>
+		<td>{{ post['from_currency'] }}</td>
+		<td>{{ post['form_quantity'] }}</td>
+		<td>{{ post['to_currency'] }}</td>
+		<td>{{ post['to_quantity'] }}</td>
+		<td>{{ '%0.8f' % (post['form_quantity']/post['to_quantity'])|float }}</td>
+	</tr>
+
+	{% else %}
+	<div><b>Base de datos vacia</b></div><br>
+	{% endfor %}
+</table>
+
+<div>
+<form action="/"  method="post"> 
+	<input type="submit" name ="accion" value="Eliminar Base de Datos" class="btn btn-primary" /> 
+	<button class="btn btn-primary"style="float:right" > <a href="/status" style="color:white !important">Status</a></button>
+</form>
+</div>
 {% endblock %}
