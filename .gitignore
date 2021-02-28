@@ -1,0 +1,7 @@
+
+__pycache__/
+movements/__pycache__/
+.env
+.vscode/
+
+config.py
